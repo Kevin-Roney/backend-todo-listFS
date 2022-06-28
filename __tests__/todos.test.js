@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
+const { response } = require('../lib/app');
 
 const mockUser = {
   email: 'winston@example.com',
@@ -52,18 +53,6 @@ describe('items', () => {
     console.log('response', resp.body);
     expect(resp.status).toEqual(200);
     expect(resp.body[0].todo).toEqual('buy milk');
-  });
-
-  it('GET /api/v1/todos/:id returns a single todo item', async () => {
-    const [agent, user] = await registerAndLogin();
-    const todo = await agent.post('/api/v1/todos')
-      .send({
-        todo: 'buy milk',
-        user_id: user.id,
-      });
-    const resp = await agent.get(`/api/v1/todos/${todo.id}`);
-    expect(resp.status).toEqual(200);
-    expect(resp.body.todo).toEqual('buy milk');
   });
 
   afterAll(() => {
