@@ -9,10 +9,6 @@ const mockUser = {
   password: '123456',
 };
 
-const mockUser2 = {
-  email: 'kevin@example.com',
-  password: '123456',
-};
 
 const registerAndLogin = async (userProps = {}) => {
   const password = userProps.password ?? mockUser.password;
@@ -36,7 +32,6 @@ describe('items', () => {
         todo: 'buy milk',
         user_id: user.id,
       });
-      console.log(resp.body);
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual({
       id: expect.any(String),
@@ -44,6 +39,18 @@ describe('items', () => {
       user_id: user.id,
       completed: false,
     });
+  });
+
+  it('GET /api/v1/todos returns all shopping items', async () => {
+    const [agent, user] = await registerAndLogin();
+    await agent.post('/api/v1/todos')
+      .send({
+        todo: 'buy milk',
+        user_id: user.id,
+      });
+    const resp = await agent.get('/api/v1/todos');
+    expect(resp.status).toEqual(200);
+    expect(resp.body[0].todo).toEqual('buy milk');
   });
 
   afterAll(() => {
