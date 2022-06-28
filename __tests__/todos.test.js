@@ -28,14 +28,15 @@ describe('items', () => {
     return setup(pool);
   });
 
-  it('POST /api/v1/items creates a new shopping item with the current user', async () => {
+  it('POST /api/v1/todos creates a new shopping item with the current user', async () => {
     const [agent, user] = await registerAndLogin();
 
-    const resp = await agent.post('/api/v1/items')
+    const resp = await agent.post('/api/v1/todos')
       .send({
         todo: 'buy milk',
-        completed: false
+        user_id: user.id,
       });
+      console.log(resp.body);
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual({
       id: expect.any(String),
