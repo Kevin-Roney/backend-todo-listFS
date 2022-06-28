@@ -41,7 +41,7 @@ describe('items', () => {
     });
   });
 
-  it('GET /api/v1/todos returns all shopping items', async () => {
+  it('GET /api/v1/todos returns all todo items', async () => {
     const [agent, user] = await registerAndLogin();
     await agent.post('/api/v1/todos')
       .send({
@@ -49,6 +49,7 @@ describe('items', () => {
         user_id: user.id,
       });
     const resp = await agent.get('/api/v1/todos');
+    console.log('response', resp.body);
     expect(resp.status).toEqual(200);
     expect(resp.body[0].todo).toEqual('buy milk');
   });
