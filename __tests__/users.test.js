@@ -58,7 +58,7 @@ describe('users', () => {
     const resp = await agent.delete('/api/v1/users/sessions');
     expect(resp.status).toBe(204);
   });
-  
+
   afterAll(() => {
     pool.end();
   });
