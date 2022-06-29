@@ -55,13 +55,12 @@ describe('items', () => {
     expect(resp.body[0].todo).toEqual('buy milk');
   });
 
-  it.only('PUT /api/v1/todos/:id updates a todo item', async () => {
+  it('PUT /api/v1/todos/:id updates a todo item', async () => {
     const [agent, user] = await registerAndLogin();
     const todo = await agent.post('/api/v1/todos').send({
       todo: 'buy milk',
       user_id: user.id,
     });
-    // const { id } = todo.body;
     const resp = await agent
       .put('/api/v1/todos/1')
       .send({
@@ -69,9 +68,21 @@ describe('items', () => {
       });
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual({
-      ...todo,
+      ...todo.body,
       completed: true,
     });
+  });
+
+  it('DELETE /api/v1/todos/:id deletes a todo item', async () => {
+    const [agent, user] = await registerAndLogin();
+    const todo = await agent.post('/api/v1/todos').send({
+      todo: 'buy milk',
+      user_id: user.id,
+    });
+    const resp = await agent.delete('/api/v1/todos/1');
+    expect(resp.status).toEqual(200);
+    const check = await Todo.getById(todo.id);
+    expect(check).toBeNull();
   });
 
   afterAll(() => {
