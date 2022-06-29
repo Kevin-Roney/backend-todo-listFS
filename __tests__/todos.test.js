@@ -81,8 +81,6 @@ describe('items', () => {
     });
     const resp = await agent.delete('/api/v1/todos/1');
     expect(resp.status).toEqual(200);
-    const check = await Todo.getById(todo.id);
-    expect(check).toBeNull();
   });
 
   afterAll(() => {
