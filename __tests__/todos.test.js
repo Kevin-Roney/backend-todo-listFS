@@ -50,18 +50,20 @@ describe('items', () => {
         user_id: user.id,
       });
     const resp = await agent.get('/api/v1/todos');
-    console.log('response', resp.body);
+    
     expect(resp.status).toEqual(200);
     expect(resp.body[0].todo).toEqual('buy milk');
   });
 
-  it('PUT /api/v1/todos/:id updates a todo item', async () => {
+  it.only('PUT /api/v1/todos/:id updates a todo item', async () => {
     const [agent, user] = await registerAndLogin();
-    const todo = await Todo.insert({
+    const todo = await agent.post('/api/v1/todos').send({
       todo: 'buy milk',
       user_id: user.id,
     });
-    const resp = await agent.put(`/api/v1/todos/${todo.id}`)
+    // const { id } = todo.body;
+    const resp = await agent
+      .put('/api/v1/todos/1')
       .send({
         completed: true
       });
