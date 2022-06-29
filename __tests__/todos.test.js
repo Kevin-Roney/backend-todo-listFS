@@ -3,7 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
-const Todo = require('../lib/models/Todo');
+
 
 const mockUser = {
   email: 'winston@example.com',
@@ -75,7 +75,7 @@ describe('items', () => {
 
   it('DELETE /api/v1/todos/:id deletes a todo item', async () => {
     const [agent, user] = await registerAndLogin();
-    const todo = await agent.post('/api/v1/todos').send({
+    await agent.post('/api/v1/todos').send({
       todo: 'buy milk',
       user_id: user.id,
     });
